@@ -194,3 +194,14 @@ def parser_attach_syntax_extension(parser, extension):
 def parser_get_syntax_extensions(parser):
     """Direct wrapper over cmark_parser_get_syntax_extensions."""
     return _cmark.lib.cmark_parser_get_syntax_extensions(parser)
+
+
+def iter_document(node):
+    """Generator visiting the document tree and returning event,node tuples."""
+    iter = _cmark.lib.cmark_iter_new(node)
+    while True:
+        evt = _cmark.lib.cmark_iter_next(iter)
+        if evt == _cmark.lib.CMARK_EVENT_DONE:
+            break
+        yield evt,_cmark.lib.cmark_iter_get_node(iter)
+    _cmark.lib.cmark_iter_free(iter)

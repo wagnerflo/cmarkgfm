@@ -41,6 +41,28 @@ void cmark_parser_free(cmark_parser *parser);
 void cmark_parser_feed(cmark_parser *parser, const char *buffer, size_t len);
 cmark_node *cmark_parser_finish(cmark_parser *parser);
 
+const char *cmark_node_get_type_string(cmark_node *node);
+const char *cmark_node_get_literal(cmark_node *node);
+
+int cmark_node_get_start_line(cmark_node *node);
+int cmark_node_get_start_column(cmark_node *node);
+int cmark_node_get_end_line(cmark_node *node);
+int cmark_node_get_end_column(cmark_node *node);
+
+typedef struct cmark_iter cmark_iter;
+typedef enum {
+  CMARK_EVENT_NONE,
+  CMARK_EVENT_DONE,
+  CMARK_EVENT_ENTER,
+  CMARK_EVENT_EXIT
+} cmark_event_type;
+cmark_iter *cmark_iter_new(cmark_node *root);
+void cmark_iter_free(cmark_iter *iter);
+cmark_event_type cmark_iter_next(cmark_iter *iter);
+cmark_node *cmark_iter_get_node(cmark_iter *iter);
+cmark_event_type cmark_iter_get_event_type(cmark_iter *iter);
+cmark_node *cmark_iter_get_root(cmark_iter *iter);
+
 #define CMARK_OPT_DEFAULT 0
 #define CMARK_OPT_SOURCEPOS ...
 #define CMARK_OPT_HARDBREAKS ...
